@@ -8,7 +8,7 @@ import {
 import { ChickenData } from "../../types/ChickenData";
 import "./ChickenTable.css";
 import { setComparisonData } from "../../store/slices/comparisonSlice";
-import productsData from "../../data/products.json";
+import productsData from "../../../public/data/products.json";
 
 const products: ChickenData[] = productsData as ChickenData[];
 
@@ -40,8 +40,10 @@ const ChickenTable: React.FC = () => {
 
   // filteredData 변경시 페이지 리셋
   useEffect(() => {
-    dispatch(setCurrentPage(1));
-  }, [filteredResults, dispatch]);
+    fetch("/data/products.json")
+      .then((response) => response.json())
+      .then((data) => dispatch(setData(data)));
+  }, [dispatch]);
 
   // 테이블 페이징
   const indexOfLastItem = currentPage * itemsPerPage;
